@@ -1,0 +1,48 @@
+#include<vector>
+#include<iostream>
+using namespace std;
+class vec{
+public :
+  vector<int> v;
+  vector<int> push_items( int num){
+    vector<int>v;
+    for(int i=0;i<num;i++){
+      v.push_back(i);
+    }
+    return v;
+  }
+  void print(vector<int> v){
+    for(int i=0;i<v.size();i++){
+      cout<<v[i]<<"\t";
+    }
+    if(v.size()==0){
+      cout<<"Empty vector";
+    }
+  }
+  void reverse(vector<int> v,vector<int> * begin, vector<int> * end){
+    if(begin!=end){
+      end--;
+      if(begin!=end){
+	while(true){
+	  swap(*begin,*end);
+	  begin++;
+	  if(begin==end){
+	    break;
+	  }
+	  end--;
+	  if(begin==end){
+	    break;
+	  }
+	}
+      }
+    }
+    print(v);
+  }
+  
+};
+  int main(){
+    vec v;
+    v.v=v.push_items(10);
+    v.print(v.v);
+    v.reverse(v.v,v.v.begin(),v.v.end());
+  }

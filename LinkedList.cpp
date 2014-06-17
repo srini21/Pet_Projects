@@ -164,6 +164,22 @@ void moveNode(struct node** destRef, struct node** sourceRef){//move the front n
   temp->next=*destRef;
   *destRef=temp;
 }
+
+struct node * swapPairs(struct node * head){
+  if(head==NULL||head->next==NULL){return head;}
+  struct node * left=head->next, * right=left->next;struct node * dummy=head;
+  while(dummy!=NULL&&dummy->next!=NULL&&dummy->next->next!=NULL){
+    left=dummy->next;
+    right=left->next;
+    cout<<left->data<<"\t"<<right->data<<"\n";
+    dummy->next=right;
+    left->next=right->next;
+    right->next=left;
+    dummy=left;
+    printlist(head->next);
+  }
+  return head;
+}
 void it_reverse(struct node ** headRef){//iterative reverse of a linked list
   struct node* head=*headRef;
   struct node* rev=NULL;
@@ -173,8 +189,55 @@ void it_reverse(struct node ** headRef){//iterative reverse of a linked list
     head->next=rev;
     rev=head;
     head=temp;
-  }
+   }
   *headRef=rev;
+}
+struct node* it_rev(struct node * head, int k){//reverse in k pairs
+  struct node *current= head;
+  struct node * next;
+  struct node * rev=NULL;
+  int i=0;
+  struct node * checker=current;
+    while(checker!=NULL&&i<k-1){
+   checker=checker->next;
+    i++;
+   }
+  if(checker==NULL){
+    return current;
+    }
+  i=0;
+  while(current!=NULL&&i<k){
+    next=current->next;
+    current->next=rev;
+    rev=current;
+    current=next;
+    i++;
+  }
+  if(current!=NULL){
+    head->next=it_rev(current,k);
+  }
+  return rev;
+}
+struct node* rotateRight(struct node* head, int k){
+  if(!head||!(head->next)||k==0){return head;}
+  int length=len(head);
+  cout<<length;
+  int i=1;
+  struct node* fullprev;
+  bool flag=false;
+  struct node *slow=head,*full=head;
+  while(i<length){
+    if(i<(length-k)){
+      slow=slow->next;
+    }
+    full=full->next;
+    i++;
+  }
+  fullprev=slow->next;
+  slow->next=NULL;
+  full->next=head;
+  
+  return fullprev;
 }
 void altSplit(struct node* source, struct node ** aRef, struct node ** bRef){//alternating split, divide a list into two lists of alternating elements
   if(source==NULL){
@@ -239,7 +302,7 @@ struct node* sortedMerge(struct node * a, struct node * b){//merge sorted lists
       *ref=a;
       break;
     }
-    if(a->data>=b->data){
+    if(a->data<b->data){
       moveNode(ref,&a);
     }
     else{
@@ -250,21 +313,33 @@ struct node* sortedMerge(struct node * a, struct node * b){//merge sorted lists
   cout<<"SortedMerge Ended\n";
   return result;
 }
+struct node * partition(struct node * head, int x){
+  struct node * less=head,*temp;
+       struct node *lessRef=less;
+       if(head==NULL){
+           return NULL;
+       }
+       while(head!=NULL){
+           if(head->data<x){
+               temp=head->next;
+               less->next=head;
+               head=temp;
+               break;
+           }
+           head=head->next;
+       }
+       return lessRef;
+}
 void rec_rev(struct node ** headRef){//recursive linked list reversal
-  if(*headRef==NULL||(*headRef)->next==NULL){
-    return;
-  }
-  struct node *temp;
-  struct node * rev=NULL;
-  struct node * current=*headRef;
-  while(current!=NULL){
-    temp=current->next;
-    current->next=rev;
-    rev=current;
-    current=temp;
-  }
-  *headRef=rev;
-  printlist(*headRef);
+  if(*headRef==NULL){return;}
+  struct node * first= *headRef; 
+  struct node * rest= first->next;
+  if(rest==NULL){return;}
+  rec_rev(&rest);
+  first->next->next=first;
+  first->next=NULL;
+  *headRef=rest;
+  
 }
 void rev_end(struct node* headRef){//leetcode problem Reorder list
   if(headRef==NULL||headRef->next==NULL){
@@ -291,17 +366,16 @@ void rev_end(struct node* headRef){//leetcode problem Reorder list
   }  
   headRef=dummy;
 }
-void mergeSort(struct node ** headRef){//mergeSort
-  struct node* head=*headRef;
+void mergeSort(struct node *head){//mergeSort
   struct node *aRef=NULL, *bRef=NULL;
   if(head==NULL||head->next==NULL){
     return;
   }
   else{
     fbsplit(head, &aRef, &bRef);
-    mergeSort(&aRef);
-    mergeSort(&bRef);
-    *headRef=sortedMerge(aRef,bRef);
+    mergeSort(aRef);
+    mergeSort(bRef);
+    head=sortedMerge(aRef,bRef);
   }
 }
 struct node* sortedIntersect(struct node * a, struct node * b){//find the intersection between two sorted lists
@@ -327,22 +401,68 @@ struct node* sortedIntersect(struct node * a, struct node * b){//find the inters
   cout<<count<<"\n";
   return head;
 }
+void copy_list(struct node* head){
+ 
+ while(head!=NULL){
+   struct node* temp=(struct node*)malloc(sizeof(struct node));
+   temp->data=(head)->data;
+    temp->next=(head)->next;
+    (head)->next=temp;
+    head=head->next->next;
+  }
+}
+struct node *removeNthFromEnd(struct node *head, int n) {
+  // if(head==NULL)return head;
+  struct node * fast=head, *slow=head;
+  if(n==0){return head;}
+  while(--n){
+    fast=fast->next;
+    cout<<"Fast-"<<fast->data<<"\n";
+  }
+  fast=fast->next;
+  if(fast==NULL){return head->next;}
+  while(fast->next!=NULL){
+    cout<<"Fast-"<<fast->data<<"\t"<<"Slow-"<<slow->data<<"\n";
+    fast=fast->next;
+    slow=slow->next;
+  }
+  if(slow->next!=NULL)
+  slow->next=slow->next->next;
+  return head;
+}
+struct node * mypartition (struct node * head, int n){
+  if(head==NULL) return head;
+  struct node * low=NULL, * high =NULL;
+  push(&low,0);push(&high,0);
+  struct node * highend=high, * lowend=low,*temp;
+  printlist(lowend);printlist(highend);
+  while(head!=NULL){
+    temp=head->next;
+    if(head->data < n){
+      low->next=head;
+      low=low->next;
+      low->next=NULL; //add to low
+    }
+    else{
+      high->next=head;
+      high=high->next;
+      high->next=NULL;
+     //add to high
+    }
+    head=temp;
+   }
+  //mix low and high
+  low->next=highend->next;
+  return lowend->next;
+}
 int main(){
   struct node* head=NULL;struct node * head2=NULL;
   int i;
   struct node *front=NULL,* middle=NULL;
-  for(i=10;i>0;i--){
-    push(&head, i);
-  
+  for(i=0;i<3;i++){
+    push(&head,i);
   }
-  push(&head2, 11);
-  push(&head, 11);
-  push(&head2, 12);
-  push(&head2,13);
-  struct node * result=NULL;
-  printlist(head2);
-  
-  rev_end(head2);
-  printlist(head2);
- 
+  printlist(head);
+  head= it_rev(head,2);
+  printlist(head);
 }

@@ -1,0 +1,12 @@
+#include<iostream>
+using namespace std;
+class arrays{
+public:
+  void push_random(int i){
+    cout<<i;
+  }  
+};
+int main(){
+  arrays a;
+  a.push_random(5);
+}
