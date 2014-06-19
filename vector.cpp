@@ -6,6 +6,10 @@ public :
   vector<int> v;
   vector<int> push_items( int num){
     vector<int>v;
+    if(num==1){
+      v.push_back(9);
+    return v;
+    }
     for(int i=0;i<num;i++){
       v.push_back(i);
     }
@@ -58,8 +62,30 @@ public :
     }
  
   }
+  void addOne(vector<int>&digits){
+   vector<int>:: iterator it=digits.end();
+        if(digits.size()==1){
+            if(*(it-1)==9){
+                digits.insert(digits.begin(),1);
+		it=digits.end();
+		cout<<++*(digits.begin()+1);
+		return;
+            }
+             ++*(it-2);
+        }
+        else{
+            if(*(it-1)==9){
+                ++*(it-2);
+            }
+        }
+        
+        *(it-1)=(++*(it-1))%10;
+        print(digits);
+ }
 };
   int main(){
     vec v;
-    v.pascals(5);
+    vector<int> ve;
+    ve=v.push_items(1);
+    v.addOne(ve);
   }
