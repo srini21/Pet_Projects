@@ -1,0 +1,16 @@
+#include<iostream> 
+using namespace std;
+struct node{
+  int val;
+  struct node* left;
+  struct node * right;
+  node(int data){
+    val=data;
+    left=NULL;
+    right=NULL;
+  }
+};
+int main(){
+  struct node * n= new node(5);
+  cout<<n->data;
+}
