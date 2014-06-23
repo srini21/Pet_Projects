@@ -4,6 +4,7 @@
 #include<stdlib.h>
 #include<algorithm>
 #include<stack>
+#include<limits.h>
 using namespace std;
 struct node{
   int val;
@@ -226,9 +227,54 @@ void doubleTree(struct node * root){
     root->left->left=oldNode;
   }
 }
+bool sameTree(struct node* a, struct node * b){
+  if(!a&&!b){
+    return true;
+  }
+  else if(a&&!b|| !a&&b || a->val!=b->val){
+    return false;
+  }
+  else{
+    return sameTree(a->left,b->left)&&sameTree(a->right,b->right);
+  }
+}
+long long int numTrees(int n){
+  if(n<=1)
+    return 1;
+  else{
+    int left,right,root;
+    long long int sum=0;
+    for(root=1;root<=n;root++){
+      left=numTrees(root-1);
+      right=numTrees(n-root);
+      sum+=left*right;
+    }
+    return sum;
+  }
+}
+bool minmax(struct node * root, int max, int min){
+  if(!root){
+    return true;
+  }
+  else{
+    if(root->val>=max||root->val<min){
+      return false;
+    }
+    else{
+      return minmax(root->left,root->val,min)&&minmax(root->right,max,root->val);
+    }
+  }
+}
+bool isBST(struct node * root){
+  if(!root)
+    return true;
+  else{
+    return minmax(root,INT_MAX,INT_MIN);
+  }
+}
 int main(){
   struct node * n= randomTree();
-  // struct node * n=skew();
+  struct node * n1=skew();
   vector<int>r;
   vector<vector <int> >res;
   cout<<"Inorder:\n";
@@ -246,4 +292,10 @@ int main(){
   doubleTree(n);
   bfs(n);
   print(n);
+  if(sameTree(n,n)){
+    cout<<"sameTree\n";
+  }
+  cout<<numTrees(15)<<"\t";
+  if(isBST(n1))
+    cout<<"Yep";
 }

@@ -455,7 +455,7 @@ struct node * mypartition (struct node * head, int n){
   low->next=highend->next;
   return lowend->next;
 }
-void check(struct node* head){
+void check(struct node* &head){
   if(head){
     cout<<head->data;
   }
