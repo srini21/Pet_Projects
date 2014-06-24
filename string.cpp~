@@ -1,0 +1,26 @@
+#include<stack>
+#include<algorithm>
+#include<iostream>
+using namespace std;
+ int longestValidParentheses(string s) {
+        stack<char> st;
+        int length=0;
+        for(int i=0;i<s.size();i++){
+            if(s[i]=='('){
+                st.push(s[i]);
+            }
+            if(s[i]==')'){
+                if(st.top()=='('){
+                    st.pop();
+                    length+=2;
+                }
+                else{
+                    continue;
+                }
+            }
+        }
+        return length;
+    }
+int main(){
+  cout<<longestValidParenthesis("(");
+}

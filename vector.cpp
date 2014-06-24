@@ -1,5 +1,6 @@
 #include<vector>
 #include<iostream>
+#include<algorithm>
 using namespace std;
 class vec{
 public :
@@ -62,6 +63,7 @@ public :
     }
  
   }
+  
   void addOne(vector<int>&digits){
    vector<int>:: iterator it=digits.end();
         if(digits.size()==1){
@@ -86,6 +88,16 @@ public :
   int main(){
     vec v;
     vector<int> ve;
-    ve=v.push_items(1);
-    v.addOne(ve);
+    ve.push_back(1);
+    ve.push_back(3);
+    ve.push_back(1);
+    vector<int> ve2;
+    ve2.push_back(1);
+    ve2.push_back(3);
+    ve2.push_back(1);
+    
+    std::reverse(ve.begin(),ve.end());
+    if(ve2==ve){
+      cout<<"Yikes!";
+    }
   }
