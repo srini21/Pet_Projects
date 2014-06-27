@@ -5,6 +5,7 @@
 #include<algorithm>
 #include<stack>
 #include<limits.h>
+#include<utility>
 using namespace std;
 struct node{
   int val;
@@ -214,6 +215,27 @@ void mirror(struct node * root){
     mirror(root->right);
   }
 }
+void morrisTraversal(struct node* root){
+  while(root){
+    if(root->left){
+      struct node * pre=root->left;
+      while(pre->right&&pre->right!=root){
+	pre=pre->right;
+      }
+      if(pre->right){
+	pre->right=NULL;
+	root=root->right;
+      }else{
+	cout<<root->val<<"--";	
+	pre->right=root;
+	root=root->left;
+      }
+    }else{
+      cout<<root->val<<"-";
+      root=root->right;
+    }
+  }
+}
 void doubleTree(struct node * root){
   if(!root){
     return;
@@ -272,30 +294,37 @@ bool isBST(struct node * root){
     return minmax(root,INT_MAX,INT_MIN);
   }
 }
+pair<struct node *, int> firstKBal(struct node * root,int k){
+  if(!root){
+    return pair<struct node*, int>(NULL,0);
+  }
+  pair<struct node* ,int> l=firstKBal(root->left,k);
+  if(l.first){
+    return l;
+  }
+  pair<struct node *, int> r=firstKBal(root->right,k);
+  if(r.first){
+    return r;
+  }
+  int nodes=l.second+r.second+1;
+  if(abs(l.second-r.second)>k){
+    return make_pair(root,nodes);
+  }
+  return pair<struct node*, int>(NULL,nodes);
+}
 int main(){
   struct node * n= randomTree();
   struct node * n1=skew();
   vector<int>r;
   vector<vector <int> >res;
-  cout<<"Inorder:\n";
-  print(n);
-  cout<<"\nBFS:\n";
-  bfs(n);
-  cout<<"PostOrder:\n";
-  postorderPrint(n);
-  cout<<"\nmin Value\t:"<<minValue(n)<<"\n";
-  if(hasPathSum(n,340))cout<<"Has path\n";
-  printPathDrive(n);
-  // mirror(n);
-  bfs(n);
-  postorderPrint(n);
-  doubleTree(n);
-  bfs(n);
-  print(n);
-  if(sameTree(n,n)){
-    cout<<"sameTree\n";
-  }
-  cout<<numTrees(15)<<"\t";
-  if(isBST(n1))
-    cout<<"Yep";
+  // morrisTraversal(n);
+  // cout<<endl;
+  // postorderPrint(n);
+  // bfs(n);
+  pair<struct node*,int> p=firstKBal(n1,0);
+  if(!p.first){
+    cout<<p.second;
+  }else{
+    bfs(p.first);
+  }  
 }
