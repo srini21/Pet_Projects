@@ -321,7 +321,7 @@ pair<struct node *, int> firstKBal(struct node * root,int k){
 struct node * getTree(const vector<int> & pre,const vector<int> & in,int ist,int ied, int pst){
   if(ist>ied)return NULL;
   auto it=find(in.cbegin(),in.cend(),pre[pst]);
-  int l_size=it-ist;
+  int l_size=it.size();
   for(int i=ist;i<=ied;i++)if(in[i]==pre[pst])l_size=i;
   node* n= new node(pre[pst]);
   n->right=getTree(pre,in,l_size+1,ied,pst+1+l_size-ist);
