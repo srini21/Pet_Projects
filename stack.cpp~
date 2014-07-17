@@ -1,0 +1,49 @@
+#include<iostream>
+using namespace std;
+class Stack{
+  int maxstack;
+  int empty;
+  int top;
+  char* items;
+public:
+  Stack(int);
+  ~Stack();
+  void push(char );
+  char pop();
+  int empty();
+  int full();
+};
+Stack::Stack(int size){
+  maxstack=size;
+  empty=-1;
+  top=empty;
+  items=new char[maxstack];
+}
+Stack::~Stack(){
+  delete[] items;
+}
+void Stack::push(char c){
+  items[++top]=c;
+}
+char Stack:: pop(){
+  return items[top--];
+}
+int Stack::full(){
+  return top+1==maxstack;
+}
+int Stack::empty(){
+  return top==empty;
+}
+
+int main(){
+  Stack s(10);
+  char ch;
+  while((ch==cin.get())!='\n'){
+    if(!s.full()){
+      s.push(ch);
+    }
+  }
+  while(!s.empty()){
+    cout<<s.pop();
+  }
+}

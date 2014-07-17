@@ -1,6 +1,7 @@
 using namespace std;
 #include<iostream>
 #include<malloc.h>
+#include<set>
 struct node{
   int data;
   struct node * next;
@@ -140,6 +141,28 @@ void fbsplit(struct node * head, struct node** front, struct node** middle){//sp
   
   source->next=NULL;
   return;
+}
+void removeDupUnsorted(struct node * head){
+  if(!head){
+    return;
+  }
+  node * prev=head,*curr=head->next;
+  while(curr){
+    node * runner=head;
+    while(runner!=curr){
+      if(runner->data==curr->data){
+	node * tmp=curr->next;
+	prev->next=tmp;
+	curr=tmp;
+	break;
+      }
+      runner=runner->next;
+    }
+    if(runner==curr){
+      prev=curr;
+      curr=curr->next;
+    }
+  }
 }
 void removeDuplicates(struct node * head){//remove all duplicates in a sorted list
   if(head==NULL || head->next== NULL){return;}
@@ -467,6 +490,8 @@ int main(){
   for(i=0;i<3;i++){
     push(&head,i);
   }
+  push(&head,43);
+  push(&head,43);
+  removeDupUnsorted(head);
   printlist(head);
-  check(head);
 }

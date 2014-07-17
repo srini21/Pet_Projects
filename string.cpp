@@ -2,19 +2,20 @@
 #include<algorithm>
 #include<iostream>
 using namespace std;
-
-                if(st.top()=='('){
-                    st.pop();
-                    length+=2;
-                }
-                else{
-                    continue;
-                }
-            }
-        }
-        return length;
+bool uniq(string s){
+  int val=0;
+  int len=s.length();
+  for(int i=0;i<len;i++){
+    int check=(s[i]-'a');
+    if(val&(1<<check)){
+      cout<<"dup";
+      return false;
     }
+    val|=(1<<check);
+  }
+  cout<<"no dup";
+  return true;
+}
 int main(){
-  
-  cout<<longestValidParentheses(")");
+  uniq("1q");
 }
