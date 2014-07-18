@@ -2,7 +2,7 @@
 using namespace std;
 class Stack{
   int size;
-  int* items;
+  char* items;
   int top;
 public:
   Stack(int);
