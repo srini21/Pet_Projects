@@ -1,0 +1,25 @@
+#include<iostream>
+using namespace std;
+int stackSize=10;
+int[] buffer= new int[3*stackSize];
+int[] stackTop= {-1,-1,-1};
+void push(int num, int stack){
+  int index=stack*stacksize+stackTop[stack]+1;
+  stacktop[stack++];
+  buffer[index]=num;
+}
+int pop(int stackNum){
+  if(stackTop[stackNum]==-1){
+    return;
+  }
+  stackTop[stackNum--];
+  return  buffer[stackNum*stackSize + stackTop[stackNum]];
+}
+int main(){
+  for(int i=0;i<3;i++){
+    push(i,i);
+  }
+  for(int i=0;i<3;i++){
+    cout<<pop(i);
+  }
+}
