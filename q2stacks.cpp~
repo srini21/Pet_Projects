@@ -1,0 +1,45 @@
+#include<iostream>
+#include<stacks>
+using namespace std;
+class Qstack{
+  stack<int> a;
+  stack<int> b;
+public:
+  void enq(int num){
+    if(b.empty()){
+      a.push(num);
+    }else{
+      b.push(num);
+    }
+  }
+  int deq(){
+    if(a.empty()){
+      while(!b.empty()){
+	a.push(b.top());
+	b.pop();
+      }
+      int ret=a.top();
+      a.pop();
+      return ret;
+    }else{
+      while(!a.empty()){
+	b.push(a.top());
+	a.pop();
+      }
+      int ret=b.top();
+      b.pop();
+      return ret;
+    }
+  }
+};
+int main(){
+  Qstack q;
+  int i=5;
+  while(i--){
+    q.enq(i);
+  }
+  i=5;
+  while(i--){
+    cout<<q.deq();
+  }
+}

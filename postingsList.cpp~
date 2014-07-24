@@ -1,0 +1,35 @@
+#include<iostream>
+#include<climits>
+struct node{
+  int val;
+  int order;
+  node * next;
+  node * jump;
+};
+void traverseJump(node * root){
+  
+}
+node * createList(int size){
+  node * curr= new node();
+  node * ret=curr;
+  while(size--){
+    curr->val=size;
+    curr->order=-1;
+    node * temp=new node();
+    curr->next=temp;
+    curr->jump=NULL;
+    curr=curr->next;
+  }
+  return ret;
+  
+}
+void printlist(node * n){
+  while(n){
+    cout<<n->data<<"-";
+    n=n->next;
+  }
+}
+int main(){
+  node * root= createList(5);
+  printlist(root);
+}

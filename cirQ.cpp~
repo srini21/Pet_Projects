@@ -1,0 +1,41 @@
+#include<iostream> 
+using namespace std;
+class CirQ{
+  int *q;
+  int start;
+  int end;
+  int size;
+public: 
+  CirQ::CirQ(int Qsize){
+    int *q = new int[size];
+    start=0;
+    end=0;
+    size=Qsize;
+  }
+  void CirQ::enQ(int num){
+    if(!full()){
+      q[(end++)%size]=int num;
+    }
+  }
+  int CirQ::deQ(){
+    if(!empty()){
+      return q[start++];
+    }
+  }
+  bool CirQ::empty(){
+    return end==start;
+  }
+  bool CirQ::full(){
+    return (end+1)%size==start;
+  }
+};
+
+int main(){
+  CirQ q(5);int i=0;
+  while(i<5){
+    q.enQ(i++);
+  }
+  while(i--){
+    cout<<q.deQ();
+  }
+}

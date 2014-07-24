@@ -103,28 +103,19 @@ void print(struct node * root){//prints the tree
   }
 }
 void bfs(struct node* root){
+  queue<node*> q;
   if(!root){
     return;
   }
-  queue<struct node*> q;
   q.push(root);
-  int curr=1;
-  int nxt=0;
   while(!q.empty()){
-    struct node * currNode= q.front();
+    cout<<q.front()->val<<"-";
+    if(q.front()->left){
+      q.push(q.front()->left);
+    }if(q.front()->right){
+      q.push(q.front()->right);
+    }
     q.pop();
-    curr--;
-    if(currNode){
-      cout<<currNode->val<<"\t";
-      q.push(currNode->left);
-      q.push(currNode->right);
-      nxt+=2;
-    }
-    if(curr==0){
-      cout<<"\n";
-      curr=nxt;
-      nxt=0;
-    }
   }
 }
 int size(struct node* root){
@@ -318,16 +309,7 @@ pair<struct node *, int> firstKBal(struct node * root,int k){
   }
   return pair<struct node*, int>(NULL,nodes);
 }
-struct node * getTree(const vector<int> & pre,const vector<int> & in,int ist,int ied, int pst){
-  if(ist>ied)return NULL;
-  auto it=find(in.cbegin(),in.cend(),pre[pst]);
-  int l_size=it-ist;
-  for(int i=ist;i<=ied;i++)if(in[i]==pre[pst])l_size=i;
-  node* n= new node(pre[pst]);
-  n->right=getTree(pre,in,l_size+1,ied,pst+1+l_size-ist);
-  n->left=getTree(pre,in,ist,l_size-1,pst+1);
-  return n;
-}
+
 int main(){
   struct node * n= randomTree();
   struct node * n1=skew();
@@ -339,8 +321,7 @@ int main(){
    in=inorderPrint(n);
    printvector(pre);
    printvector(in);
-   n1=getTree(pre,in,0,pre.size()-1,0);
-   // bfs(n);
+   bfs(n);
    // bfs(n1);
   // bfs(n);
   //pair<struct node*,int> p=firstKBal(n1,0);
